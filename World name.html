@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Server Management - Worlds</title>
+  <link rel="shortcut icon" href="2(1).png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-2: #0d1b2a;
+      --panel: rgba(18, 32, 48, 0.92);
+      --panel-soft: rgba(15, 23, 42, 0.8);
+      --border: rgba(255,255,255,0.08);
+      --text: #edf6ff;
+      --muted: #9eb5d1;
+      --primary: #4cc9f0;
+      --primary-2: #4895ef;
+      --success: #2dd4bf;
+      --warning: #fbbf24;
+      --danger: #f87171;
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #050b13 0%, #0a1423 42%, #101f34 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .page-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(76, 201, 240, 0.24), rgba(72, 149, 239, 0.18));
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 26px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .topbar h1 {
+      font-size: clamp(28px, 3vw, 38px);
+      font-weight: 800;
+      color: #f8fbff;
+    }
+
+    .menu-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .menu-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 22px;
+    }
+
+    .main-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .status-banner {
+      background: linear-gradient(135deg, rgba(45, 212, 191, 0.18), rgba(76, 201, 240, 0.1));
+      border: 1px solid rgba(45, 212, 191, 0.25);
+      border-radius: 18px;
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .status-banner .label {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .status-banner strong {
+      font-size: 1.1rem;
+      color: #dffcff;
+    }
+
+    .status-pill {
+      padding: 8px 12px;
+      background: rgba(45, 212, 191, 0.18);
+      border: 1px solid rgba(45, 212, 191, 0.4);
+      border-radius: 999px;
+      color: #bffef7;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .world-card {
+      background: linear-gradient(135deg, rgba(34, 51, 74, 0.96), rgba(17, 24, 39, 0.96));
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 26px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .world-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    .world-icon {
+      width: 84px;
+      height: 84px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(76, 201, 240, 0.22), rgba(72, 149, 239, 0.14));
+      border: 1px solid rgba(255,255,255,0.12);
+      display: grid;
+      place-items: center;
+      font-size: 38px;
+      color: #d0f5ff;
+      flex-shrink: 0;
+    }
+
+    .world-name {
+      color: #dff6ff;
+      font-size: clamp(22px, 2.2vw, 30px);
+      font-weight: 800;
+    }
+
+    .world-meta {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: min(100%, 170px);
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.06);
+    }
+
+    .btn-download { background: linear-gradient(135deg, #38bdf8, #2563eb); color: white; }
+    .btn-upload { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #111827; }
+    .btn-options { background: #edf2ff; color: #111827; }
+    .btn-files { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; }
+    .btn-generate { background: linear-gradient(135deg, #34d399, #10b981); color: #062d1d; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .stat-card {
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .stat-value {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stat-sub {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    .activity-panel {
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .activity-panel h2 {
+      margin-bottom: 14px;
+      font-size: 1.2rem;
+    }
+
+    .activity-list {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .activity-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .activity-list strong {
+      color: #edf6ff;
+      font-weight: 600;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .ad-card {
+      background: #f8fafc;
+      border: 1px solid #dfe8f5;
+      border-radius: 18px;
+      color: #41506a;
+      padding: 14px;
+      min-height: 180px;
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .ad-box {
+      margin-top: 12px;
+      height: 120px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #2d3748, #1f2937);
+      color: #a0aec0;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+    }
+
+    .toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: all 0.25s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 16px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .world-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .action-buttons {
+        width: 100%;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">⛏️</div>
+        <div>
+          <div class="eyebrow">Server panel</div>
+          <h1>World Manager</h1>
+        </div>
+      </div>
+      <a href="3.html" class="menu-btn">← Menu</a>
+    </header>
+
+    <div class="main-grid">
+      <main class="main-panel">
+        <div class="status-banner">
+          <div>
+            <div class="label">Status</div>
+            <strong>world</strong>
+          </div>
+          <span class="status-pill">Online</span>
+        </div>
+
+        <section class="world-card">
+          <div class="world-info">
+            <div class="world-icon">🌍</div>
+            <div>
+              <div class="world-name">world</div>
+              <div class="world-meta">Java Edition • 1.20.4 • 2GB Ram</div>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="btn btn-download" data-action="download">📥 Download</button>
+            <button class="btn btn-upload" data-action="upload">📤 Upload</button>
+            <button class="btn btn-options" data-action="options">🔧 Options</button>
+            <button class="btn btn-files" data-action="files">📁 Files</button>
+            <button class="btn btn-generate" data-action="generate">🔄 Generate</button>
+          </div>
+        </section>
+
+        <section class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Players</div>
+            <div class="stat-value">0</div>
+            <div class="stat-sub">Waiting for join</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Uptime</div>
+            <div class="stat-value">7h</div>
+            <div class="stat-sub">Stable server</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Memory</div>
+            <div class="stat-value">2GB</div>
+            <div class="stat-sub">Recommended</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Version</div>
+            <div class="stat-value">1.20</div>
+            <div class="stat-sub">Java Edition</div>
+          </div>
+        </section>
+
+        <section class="activity-panel">
+          <h2>Recent activity</h2>
+          <ul class="activity-list">
+            <li><strong>World saved</strong><span>2 min ago</span></li>
+            <li><strong>Backup created</strong><span>18 min ago</span></li>
+            <li><strong>Config updated</strong><span>1 hour ago</span></li>
+          </ul>
+        </section>
+      </main>
+
+      <aside class="sidebar">
+        <div class="ad-card">
+          Advertisement
+          <div class="ad-box">WORLD OF TANKS</div>
+        </div>
+
+        <div class="ad-card">
+          Advertisement
+          <div class="ad-box">PLAY NOW</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <script>
+    const toast = document.getElementById('toast');
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 1800);
+    }
+
+    const actions = {
+      download: () => showToast('Download started'),
+      upload: () => showToast('Upload panel opened'),
+      options: () => { window.location.href = '5.html'; },
+      files: () => { window.location.href = '6.html'; },
+      generate: () => showToast('World generation started')
+    };
+
+    document.querySelectorAll('[data-action]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const key = button.dataset.action;
+        if (actions[key]) actions[key]();
+      });
+    });
+  </script>
+</body>
+</html>

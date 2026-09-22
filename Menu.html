@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Server Management</title>
+  <link rel="shortcut icon" href="2(1).png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, rgba(0, 184, 148, 0.18), transparent 28%), linear-gradient(180deg, #03101c 0%, #081522 100%);
+      color: #e5eef8;
+    }
+
+    .video-background {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      object-fit: cover;
+      border: none;
+      filter: brightness(0.55) saturate(1.05);
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(3, 12, 26, 0.72), rgba(6, 12, 22, 0.96));
+      z-index: -1;
+      backdrop-filter: blur(3px);
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 16px;
+      animation: slideDown 0.6s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-28px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: #00b894;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #07120b;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+    }
+
+    .header-right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .account-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 12px;
+      border: 1px solid rgba(0, 184, 148, 0.35);
+      border-radius: 10px;
+      background: rgba(0, 184, 148, 0.12);
+      color: #c8fff1;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .btn-nav {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.85);
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-nav:hover {
+      background: rgba(0, 184, 148, 0.16);
+      color: #f8fffb;
+      border-color: rgba(0, 184, 148, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .server-card {
+      position: relative;
+      background: rgba(14, 26, 44, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 184, 148, 0.16);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
+      animation: slideUp 0.6s ease-out 0.2s both;
+      overflow: hidden;
+    }
+
+    .server-card::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      right: -80px;
+      width: 220px;
+      height: 220px;
+      background: rgba(0, 184, 148, 0.12);
+      border-radius: 50%;
+      filter: blur(16px);
+      pointer-events: none;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .server-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .server-status {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #00b894;
+      box-shadow: 0 0 0 4px rgba(0, 184, 148, 0.14);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.1); }
+    }
+
+    .server-title h2 {
+      margin: 0;
+      font-size: 26px;
+      color: #f8fafc;
+      letter-spacing: 0.02em;
+    }
+
+    .server-info {
+      display: flex;
+      gap: 16px;
+      color: rgba(255,255,255,0.78);
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 150px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 12px 14px;
+      transition: background 0.2s ease;
+    }
+
+    .info-item:hover {
+      background: rgba(0, 184, 148, 0.1);
+    }
+
+    .server-ip {
+      font-family: 'Courier New', monospace;
+      font-weight: 700;
+      color: #7ee787;
+      word-break: break-all;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .menu-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 22px 16px;
+      color: rgba(255,255,255,0.85);
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      min-height: 118px;
+      justify-content: center;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .menu-btn:hover {
+      background: rgba(0, 184, 148, 0.18);
+      border-color: rgba(0, 184, 148, 0.45);
+      color: #f8fffb;
+      transform: translateY(-4px);
+      box-shadow: 0 18px 44px rgba(0, 184, 148, 0.14);
+    }
+
+    .menu-btn.file-card {
+      min-height: 160px;
+      padding: 20px;
+      background: linear-gradient(180deg, rgba(3, 18, 33, 0.98), rgba(9, 31, 52, 0.95));
+      border-color: rgba(0, 184, 148, 0.2);
+      align-items: stretch;
+      gap: 16px;
+    }
+
+    .menu-btn.file-card:hover {
+      background: linear-gradient(180deg, rgba(0, 184, 148, 0.16), rgba(3, 18, 33, 0.95));
+      border-color: rgba(0, 184, 148, 0.45);
+      box-shadow: 0 22px 60px rgba(0, 184, 148, 0.18);
+    }
+
+    .file-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .file-icon {
+      display: inline-flex;
+      width: 44px;
+      height: 44px;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      background: rgba(0, 184, 148, 0.14);
+      border-radius: 14px;
+    }
+
+    .file-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: #00b894;
+      color: #07120b;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 0 10px;
+    }
+
+    .file-card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .file-card-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #f8fafc;
+      letter-spacing: 0.02em;
+    }
+
+    .file-card-subtext {
+      color: rgba(255,255,255,0.68);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .menu-icon {
+      font-size: 24px;
+      display: block;
+      line-height: 1;
+      
+    }
+
+    .header-subtitle {
+      width: 100%;
+      color: rgba(255,255,255,0.68);
+      font-size: 14px;
+      max-width: 720px;
+      margin-top: 6px;
+      line-height: 1.7;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 34px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.52);
+      animation: slideUp 0.6s ease-out 0.4s both;
+    }
+
+    @media (max-width: 768px) {
+      .server-title h2 {
+        font-size: 22px;
+      }
+
+      .server-card {
+        padding: 24px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .menu-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+      }
+
+      .menu-btn {
+        min-height: 110px;
+      }
+    }
+    .menu-btn.option-btn {
+      background: rgba(0, 184, 148, 0.18);
+      border-color: rgba(0, 184, 148, 0.45);
+      color: #07120b;
+    }
+    .menu-btn.option-btn:hover {
+      background: #00b894;
+      color: #07120b;
+      box-shadow: 0 20px 50px rgba(0, 184, 148, 0.22);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Video Background (No Download) -->
+  <video class="video-background" autoplay muted loop playsinline controlsList="nodownload">
+    <source src="https://cdn.pixabay.com/vimeo/321122325/Minecraft-10706.mp4" type="video/mp4">
+  </video>
+  
+  <!-- Dark Overlay -->
+  <div class="overlay"></div>
+  
+  <!-- Main Container -->
+  <div class="container">
+    <div class="header">
+      <div>
+        <div class="logo">
+          <div class="logo-icon">⛏️</div>
+          <span>My Minecraft</span>
+        </div>
+        <p class="header-subtitle">Quick access panel for your Minecraft server. Launch tools, view status, and manage your world from one sleek dashboard.</p>
+      </div>
+      <div class="header-right">
+        <a href="Menu.html" class="btn-nav">Home</a>
+        <a href="Sittings.html" class="btn-nav">Settings</a>
+        <span class="account-badge">👤 <span id="account-id">ID loading...</span></span>
+      </div>
+    </div>
+
+    <div class="server-card">
+      <div class="server-title">
+        <div class="server-status"></div>
+        <h2>Menu</h2>
+      </div>
+      
+
+      <div class="menu-grid">
+        
+          <a href="server.html" class="menu-btn">
+          <span class="menu-icon">⛏️</span>
+          Server
+        </a>
+        
+        <a href="Tools.html?view=console" class="menu-btn">
+          
+          <span class="menu-icon">💻</span>
+          Console
+          
+        </a>
+        <a href="Tools.html?view=logs" class="menu-btn">
+          <span class="menu-icon">📋</span>
+          Log
+        </a>
+        <a href="Sittings.html" class="menu-btn option-btn">
+          <span class="menu-icon">🔧</span>
+          Options
+        </a>
+        <a href="Tools.html?view=players" class="menu-btn">
+          <span class="menu-icon">👥</span>
+          Players
+        </a>
+        <a href="Tools.html?view=software" class="menu-btn">
+          <span class="menu-icon">💾</span>
+          Software
+        </a>
+        <a href="Mod%20and%20plugins.html" class="menu-btn">
+          <span class="menu-icon">🔌</span>
+          Plugins
+        </a>
+        
+        <a href="File.html" class="menu-btn file-card">
+          <div class="file-card-top">
+            <span class="file-icon">📁</span>
+            
+          </div>
+          <div class="file-card-body">
+            <span class="file-card-title">Files</span>
+            
+          </div>
+        </a>
+        <a href="World%20name.html" class="menu-btn">
+          <span class="menu-icon">🌎</span>
+          World
+        </a>
+        <a href="Tools.html?view=backups" class="menu-btn">
+          <span class="menu-icon">💾</span>
+          Backups
+        </a>
+        <a href="Tools.html?view=access" class="menu-btn">
+          <span class="menu-icon">🔐</span>
+          Access
+        </a>
+      </div>
+    </div>
+
+    <footer>© 2026 My Minecraft Server — Server Management Dashboard</footer>
+  </div>
+</body>
+<script>
+  if (localStorage.getItem('minecraftLoggedIn') !== 'true' || !localStorage.getItem('minecraftToken')) {
+    window.location.replace('index.html');
+  }
+  const accountId = localStorage.getItem('minecraftUserId');
+  const accountName = localStorage.getItem('minecraftUser') || 'Player';
+  const accountLabel = document.getElementById('account-id');
+  if (accountLabel) {
+    accountLabel.textContent = accountId ? accountName + ' · ID #' + accountId : accountName;
+  }
+</script>
+</html>

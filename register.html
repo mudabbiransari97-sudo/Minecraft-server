@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #08121f;
+      --panel: rgba(18, 32, 50, 0.96);
+      --border: rgba(255,255,255,0.08);
+      --text: #eef5ff;
+      --muted: #8aa2c3;
+      --accent: #4ad5c6;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top left, #2a4b76 0%, var(--bg) 45%, #02070f 100%);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 460px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 32px;
+      box-shadow: 0 24px 70px rgba(0,0,0,0.22);
+    }
+
+    .card h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .card p {
+      margin: 0 0 24px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .form-group {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 14px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(74,213,198,0.18);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn.primary {
+      color: #08121f;
+      background: linear-gradient(135deg, #74ffea, #4abdb2);
+      box-shadow: 0 14px 28px rgba(74,213,198,0.18);
+    }
+
+    .btn.secondary {
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 520px) {
+      .card { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Register</h1>
+    <p>Fill the form below to create your account. The sign button will only enable once all fields are valid.</p>
+
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="name">Username</label>
+        <input type="text" id="name" name="name" placeholder="Enter your username" required />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required />
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required />
+      </div>
+
+      <div class="form-group">
+        <label for="country">Country</label>
+        <select id="country" name="country" required>
+          <option value="">Choose your country</option>
+          <option value="BD">Bangladesh</option>
+          <option value="IN">India</option>
+          <option value="US">United States</option>
+          <option value="UK">United Kingdom</option>
+          <option value="CA">Canada</option>
+          <option value="AU">Australia</option>
+        </select>
+      </div>
+
+      <div id="message" style="margin: 12px 0; padding: 12px; border-radius: 8px; display: none;"></div>
+
+      <div class="actions">
+        <button type="submit" id="submitBtn" class="btn primary" disabled>Sign Up</button>
+        <a href="index.html" class="btn secondary">Already have account</a>
+      </div>
+    </form>
+
+    <p class="footer">Back to <a href="index.html">home</a>.</p>
+  </div>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const messageDiv = document.getElementById('message');
+
+    function updateSubmitState() {
+      const name = form.name.value.trim();
+      const phone = form.phone.value.trim();
+      const email = form.email.value.trim();
+      const password = form.password.value;
+      const confirmPassword = form.confirmPassword.value;
+      const country = form.country.value;
+      const valid = name && phone && email && password && confirmPassword && country && password === confirmPassword;
+      submitBtn.disabled = !valid;
+    }
+
+    form.addEventListener('input', updateSubmitState);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const phone = form.phone.value.trim();
+      const password = form.password.value;
+      const confirmPassword = form.confirmPassword.value;
+      const country = form.country.value;
+
+      if (password !== confirmPassword) {
+        messageDiv.style.display = 'block';
+        messageDiv.style.background = 'rgba(244, 63, 94, 0.2)';
+        messageDiv.style.color = '#f43f5e';
+        messageDiv.style.borderLeft = '3px solid #f43f5e';
+        messageDiv.textContent = 'Password match nahi kare!';
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, phone, password, confirmPassword, country })
+        });
+
+        let data = {};
+        try {
+          data = await response.json();
+        } catch (jsonError) {
+          data = {};
+        }
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Registration failed.');
+        }
+
+        localStorage.setItem('minecraftToken', data.token);
+        localStorage.setItem('minecraftLoggedIn', 'true');
+        localStorage.setItem('minecraftUser', data.user.username);
+        localStorage.setItem('minecraftUserId', String(data.user.id));
+        messageDiv.style.display = 'block';
+        messageDiv.style.background = 'rgba(52, 211, 153, 0.2)';
+        messageDiv.style.color = '#34d399';
+        messageDiv.style.borderLeft = '3px solid #34d399';
+        messageDiv.textContent = 'Account created. Opening your server dashboard...';
+        setTimeout(() => { window.location.href = 'Menu.html'; }, 700);
+      } catch (error) {
+        messageDiv.style.display = 'block';
+        messageDiv.style.background = 'rgba(244, 63, 94, 0.2)';
+        messageDiv.style.color = '#f43f5e';
+        messageDiv.style.borderLeft = '3px solid #f43f5e';
+
+        const isNetworkError = error instanceof TypeError && /fetch|Failed to fetch/i.test(error.message);
+        messageDiv.textContent = isNetworkError
+          ? 'Server is not responding. Please start the app or try again later.'
+          : error.message;
+      }
+    });
+  </script>
+</body>
+</html>

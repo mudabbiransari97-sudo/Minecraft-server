@@ -1,0 +1,14 @@
+{
+  "name": "minecraft-server-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Minecraft hosting dashboard with SQLite account storage",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.21.2"
+  }
+}

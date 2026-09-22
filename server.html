@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Minecraft Server</title>
+  <link rel="shortcut icon" href="2(1).png" type="image/x-icon">
+  <style>
+    :root{--bg:#07131f;--panel:#102235;--panel2:#0c1a29;--line:rgba(255,255,255,.1);--text:#eef7ff;--muted:#93aac0;--green:#00c896;--red:#fb7185;--blue:#56b4ff}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--text);font:14px/1.5 Inter,system-ui,sans-serif;background:radial-gradient(circle at top right,#12505a 0,transparent 35%),linear-gradient(135deg,#06101b,#0c1e31)}
+    .shell{width:min(1160px,calc(100% - 32px));margin:auto;padding:28px 0 46px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:22px}.brand{display:flex;align-items:center;gap:13px}.mark{display:grid;place-items:center;width:48px;height:48px;border-radius:15px;background:#00c89622;border:1px solid #00c89655;font-size:24px}.eyebrow{margin:0;color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase}.brand h1{margin:2px 0 0;font-size:clamp(24px,4vw,34px)}
+    .button,.action{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 15px;border-radius:11px;border:1px solid var(--line);background:#ffffff0d;color:var(--text);font:inherit;font-weight:700;text-decoration:none;cursor:pointer}.button:hover,.action:hover{background:#ffffff18;border-color:#00c89688}.button.primary{background:var(--green);border-color:var(--green);color:#041810}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px}.card{background:#102235e8;border:1px solid var(--line);border-radius:21px;padding:22px;box-shadow:0 24px 70px #0004}.hero{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;background:linear-gradient(135deg,#0f3b3e,#102235 65%)}.label{color:var(--muted);font-size:12px;letter-spacing:.1em;text-transform:uppercase}.server-name{margin:4px 0;font-size:clamp(25px,5vw,38px)}.address{color:#9ef1db;font-family:Consolas,monospace}.status{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;background:#00c8961c;color:#91f8df;font-weight:800}.status.offline{background:#fb71851c;color:#fecdd3}.dot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 0 5px #00c89622}.offline .dot{background:var(--red);box-shadow:0 0 0 5px #fb718522}.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.action.start{background:var(--green);color:#041810;border-color:var(--green)}.action.stop{background:#fb71851c;color:#fecdd3;border-color:#fb718555}.action:disabled{opacity:.45;cursor:not-allowed}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-top:18px}.stat{background:#081522aa;border:1px solid var(--line);border-radius:15px;padding:16px}.stat strong{display:block;font-size:22px;margin:4px 0}.stat span{color:var(--muted);font-size:12px}.quick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}.quick a{display:grid;gap:4px;padding:16px;border-radius:15px;background:#ffffff08;border:1px solid var(--line);color:var(--text);text-decoration:none}.quick a:hover{border-color:#56b4ff88;background:#56b4ff12}.quick small{color:var(--muted)}.side{display:grid;gap:18px;align-content:start}.side h2{font-size:16px;margin:0 0 13px}.progress{height:9px;border-radius:10px;background:#ffffff12;overflow:hidden;margin-top:9px}.progress i{display:block;height:100%;width:34%;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:inherit}.notice{min-height:22px;margin-top:15px;color:#9ef1db}.activity{display:grid;gap:12px}.activity div{display:flex;gap:10px;color:var(--muted);font-size:13px}.activity b{color:var(--text)}@media(max-width:800px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:480px){.shell{width:min(100% - 22px,1160px);padding-top:16px}.stats{grid-template-columns:1fr 1fr}.quick{grid-template-columns:1fr}.card{padding:17px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><div class="mark">⛏️</div><div><p class="eyebrow">Minecraft hosting</p><h1>My Server</h1></div></div>
+      <a class="button" href="Menu.html">← Dashboard</a>
+    </header>
+    <div class="layout">
+      <section>
+        <div class="card hero">
+          <div><p class="label">Server address</p><h2 class="server-name">Survival Realm</h2><div class="address">play.myserver.example:25565</div></div>
+          <div class="status" id="status"><span class="dot"></span><span>Online</span></div>
+          <div class="controls"><button class="action start" id="start" type="button">▶ Start</button><button class="action stop" id="stop" type="button">■ Stop</button><button class="action" id="restart" type="button">↻ Restart</button></div>
+          <div class="notice" id="notice" role="status"></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><span>Players</span><strong id="players">4 / 20</strong><span>Active now</span></div>
+          <div class="stat"><span>Version</span><strong>1.21.1</strong><span>Paper</span></div>
+          <div class="stat"><span>RAM usage</span><strong>1.8 GB</strong><span>of 4 GB</span></div>
+          <div class="stat"><span>Uptime</span><strong id="uptime">2h 14m</strong><span>This session</span></div>
+        </div>
+        <div class="card" style="margin-top:18px"><p class="label">Quick management</p><div class="quick"><a href="Tools.html?view=console">💻 <b>Console</b><small>Send commands and view logs</small></a><a href="File.html">📁 <b>Files</b><small>Edit server files</small></a><a href="Mod%20and%20plugins.html">🔌 <b>Plugins and mods</b><small>Install server extensions</small></a><a href="World%20name.html">🌎 <b>World</b><small>Manage your game world</small></a></div></div>
+      </section>
+      <aside class="side">
+        <div class="card"><h2>Resource usage</h2><p class="label">Memory</p><div class="progress"><i></i></div><p style="color:var(--muted);margin-bottom:0">1.8 GB / 4 GB allocated</p><p class="label" style="margin-top:18px">Storage</p><div class="progress"><i style="width:62%"></i></div><p style="color:var(--muted);margin-bottom:0">6.2 GB / 10 GB used</p></div>
+        <div class="card"><h2>Recent activity</h2><div class="activity"><div>🟢 <span><b>Server started</b><br>Today at 20:31</span></div><div>👤 <span><b>Alex joined</b><br>Today at 20:45</span></div><div>💾 <span><b>Backup created</b><br>Yesterday at 23:10</span></div></div></div>
+      </aside>
+    </div>
+  </main>
+  <script>
+    const status = document.getElementById('status');
+    const notice = document.getElementById('notice');
+    const start = document.getElementById('start');
+    const stop = document.getElementById('stop');
+    const saved = localStorage.getItem('serverStatus') || 'online';
+    let state = saved;
+    function render() {
+      const online = state === 'online';
+      status.classList.toggle('offline', !online);
+      status.querySelector('span:last-child').textContent = online ? 'Online' : 'Offline';
+      start.disabled = online;
+      stop.disabled = !online;
+    }
+    function change(next, text) {
+      state = next;
+      localStorage.setItem('serverStatus', next);
+      render();
+      notice.textContent = text + ' This is a frontend demo until a server backend is connected.';
+    }
+    start.onclick = () => change('online', 'Server start requested.');
+    stop.onclick = () => { if (confirm('Stop the server?')) change('offline', 'Server stop requested.'); };
+    document.getElementById('restart').onclick = () => { change('offline', 'Restarting server...'); setTimeout(() => change('online', 'Server restarted.'), 900); };
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mods & Plugins</title>
+  <link rel="shortcut icon" href="2(1).png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, rgba(0, 184, 148, 0.15), transparent 25%), linear-gradient(180deg, #03101c 0%, #081522 100%);
+      color: #e5eef8;
+      padding: 24px;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+      gap: 20px;
+      animation: slideDown 0.6s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: #f8fafc;
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .page-title .title-icon {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: rgba(0, 184, 148, 0.18);
+      border: 1px solid rgba(0, 184, 148, 0.35);
+      color: #86efac;
+      font-size: 28px;
+      box-shadow: 0 8px 20px rgba(0, 184, 148, 0.12);
+    }
+
+    .search-container {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      margin-bottom: 20px;
+      animation: slideUp 0.6s ease-out 0.1s both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .search-bar {
+      width: 100%;
+      padding: 14px 18px 14px 48px;
+      border-radius: 16px;
+      border: 1px solid rgba(0, 184, 148, 0.2);
+      background: rgba(14, 26, 44, 0.95);
+      backdrop-filter: blur(12px);
+      color: #e5eef8;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    .search-bar::placeholder {
+      color: rgba(255,255,255,0.45);
+    }
+
+    .search-bar:focus {
+      outline: none;
+      border-color: rgba(0, 184, 148, 0.5);
+      background: rgba(14, 26, 44, 0.98);
+      box-shadow: 0 12px 32px rgba(0, 184, 148, 0.15);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(0, 184, 148, 0.6);
+      font-size: 18px;
+      pointer-events: none;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+      animation: slideUp 0.6s ease-out 0.15s both;
+    }
+
+    .filter-label {
+      color: rgba(255,255,255,0.6);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .filter-btn {
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.72);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: rgba(0, 184, 148, 0.45);
+      background: rgba(0, 184, 148, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .filter-btn.active {
+      background: #00b894;
+      border-color: #00b894;
+      color: #07120b;
+      box-shadow: 0 8px 20px rgba(0, 184, 148, 0.25);
+    }
+
+    .nav-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 20px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color: #e5eef8;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      animation: slideDown 0.6s ease-out 0.2s both;
+    }
+
+    .nav-button:hover {
+      transform: translateY(-2px);
+      background: rgba(0, 184, 148, 0.12);
+      border-color: rgba(0, 184, 148, 0.35);
+      box-shadow: 0 8px 20px rgba(0, 184, 148, 0.08);
+    }
+
+    .results-info {
+      margin-bottom: 24px;
+      padding: 12px 0;
+      color: rgba(255,255,255,0.65);
+      font-size: 14px;
+      font-weight: 500;
+      animation: fadeIn 0.6s ease-out 0.2s both;
+    }
+
+    .mods-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+      animation: fadeIn 0.6s ease-out 0.25s both;
+    }
+
+    .mod-card {
+      background: rgba(14, 26, 44, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 184, 148, 0.16);
+      border-radius: 18px;
+      padding: 24px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mod-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(0, 184, 148, 0.1), transparent 70%);
+      pointer-events: none;
+    }
+
+    .mod-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(0, 184, 148, 0.4);
+      box-shadow: 0 16px 40px rgba(0, 184, 148, 0.16);
+    }
+
+    .mod-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(0, 184, 148, 0.18), rgba(0, 184, 148, 0.08));
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mod-name {
+      font-size: 20px;
+      font-weight: 900;
+      color: #f8fafc;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+      letter-spacing: -0.01em;
+    }
+
+    .mod-type {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(0, 184, 148, 0.22);
+      color: #86efac;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mod-description {
+      color: rgba(255,255,255,0.72);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mod-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mod-btn {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color: #e5eef8;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .mod-btn:hover {
+      background: rgba(0, 184, 148, 0.12);
+      border-color: rgba(0, 184, 148, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .mod-btn.install {
+      background: linear-gradient(135deg, #00b894, #00a87d);
+      color: #07120b;
+      border-color: #00b894;
+      font-weight: 800;
+    }
+
+    .mod-btn.install:hover {
+      background: linear-gradient(135deg, #00c9a0, #00b894);
+      box-shadow: 0 8px 20px rgba(0, 184, 148, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 80px 20px;
+      color: rgba(255,255,255,0.5);
+      font-size: 16px;
+      animation: fadeIn 0.6s ease-out 0.3s both;
+    }
+
+    @media (max-width: 768px) {
+      .page-header {
+        flex-direction: column;
+        align-items: stretch;
+        margin-bottom: 28px;
+      }
+
+      .page-title {
+        font-size: 28px;
+      }
+
+      .search-container {
+        max-width: 100%;
+      }
+
+      .mods-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-group {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="page-header">
+      <div class="page-title">
+        <div class="title-icon">🧩</div>
+        <span>Mods & Plugins</span>
+      </div>
+      <a href="3.html" class="nav-button">← Back</a>
+    </div>
+
+    <div class="search-container">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        id="searchInput" 
+        class="search-bar" 
+        placeholder="Search mods or plugins..."
+        onkeyup="filterMods()"
+      >
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Filter by Type:</span>
+      <button class="filter-btn active" onclick="setTypeFilter('all')" id="filter-all">All</button>
+      <button class="filter-btn" onclick="setTypeFilter('Mod')" id="filter-mod">Mod</button>
+      <button class="filter-btn" onclick="setTypeFilter('Plugin')" id="filter-plugin">Plugin</button>
+      <button class="filter-btn" onclick="setTypeFilter('Addons')" id="filter-add-ons">Addons</button>
+      <button class="filter-btn" onclick="setTypeFilter('Maps')" id="filter-maps">Maps</button>
+    </div>
+
+    <div class="results-info">
+      <span id="resultCount">Showing 0 results</span>
+    </div>
+
+    <div class="mods-grid" id="modsContainer">
+      <!-- Mods will be populated here -->
+    </div>
+
+    <div class="no-results" id="noResults" style="display: none;">
+      No mods or plugins found. Try a different search term.
+    </div>
+
+    <input type="hidden" id="typeFilter" value="all">
+  </div>
+
+  <script>
+    const modsData = [
+      {
+        name: "Optifine",
+        type: "Optimization",
+        description: "Improve FPS and add high-quality graphics settings",
+        icon: "✨"
+      },
+      {
+        name: "Forge",
+        type: "Mod Loader",
+        description: "Modding platform for Minecraft Java Edition",
+        icon: "🔧"
+      },
+      {
+        name: "Fabric",
+        type: "Mod Loader",
+        description: "Lightweight modding toolchain for Minecraft",
+        icon: "🧵"
+      },
+      {
+        name: "Sodium",
+        type: "Optimization",
+        description: "Modern rendering engine to improve performance",
+        icon: "⚡"
+      },
+      {
+        name: "Liteloader",
+        type: "Mod Loader",
+        description: "Client-side mod loader with automatic updates",
+        icon: "📦"
+      },
+      {
+        name: "Essentials",
+        type: "Plugin",
+        description: "Essential server management and player commands",
+        icon: "⚙️"
+      },
+      {
+        name: "WorldGuard",
+        type: "Plugin",
+        description: "Region protection and server management tool",
+        icon: "🛡️"
+      },
+      {
+        name: "Dynmap",
+        type: "Plugin",
+        description: "Web-based live server map viewer",
+        icon: "🗺️"
+      },
+      {
+        name: "LibsDisguises",
+        type: "Plugin",
+        description: "Disguise players as other entities",
+        icon: "🎭"
+      },
+      {
+        name: "Citizens",
+        type: "Plugin",
+        description: "Create custom NPCs and interact with them",
+        icon: "👥"
+      },
+      {
+        name: "VoidGenerator",
+        type: "Plugin",
+        description: "Generate custom void worlds",
+        icon: "🌌"
+      },
+      {
+        name: "CreativeGates",
+        type: "Plugin",
+        description: "Advanced portal and teleportation system",
+        icon: "🚪"
+      },
+      {
+        name: "Tinkers Construct",
+        type: "Mod",
+        description: "Create and modify custom tools and weapons",
+        icon: "🔨"
+      },
+      {
+        name: "Applied Energistics",
+        type: "Mod",
+        description: "Mass storage and autocrafting system",
+        icon: "⚙️"
+      },
+      {
+        name: "Thermal Expansion",
+        type: "Mod",
+        description: "Machines and energy system for automation",
+        icon: "🌡️"
+      },
+      {
+        name: "JEI",
+        type: "Mod",
+        description: "Just Enough Items - better inventory management",
+        icon: "📋"
+      },
+      {
+        name: "Twilight Forest",
+        type: "Mod",
+        description: "New dimension with unique biomes and mobs",
+        icon: "🌲"
+      },
+      {
+        name: "Minecolonies",
+        type: "Mod",
+        description: "Build a colony with NPCs and automation",
+        icon: "🏘️"
+      },
+      {
+        name: "The Cursed Redwood Forest",
+        type: "Mod",
+        description: "Atmospheric horror dimension with cursed forest biome",
+        icon: "🌲"
+      },
+      {
+        name: "Apollyon",
+        type: "Mod",
+        description: "Apocalyptic dimension with unique mobs and challenges",
+        icon: "☠️"
+      },
+      {
+        name: "CRYPTID",
+        type: "Mod",
+        description: "Adds mysterious cryptid creatures to your world",
+        icon: "👻"
+      },
+      {
+        name: "The Snow Guard",
+        type: "Mod",
+        description: "Boss encounter in snowy biome with powerful rewards",
+        icon: "❄️"
+      },
+      {
+        name: "The Mimic Dweller",
+        type: "Mod",
+        description: "Shape-shifting entity that mimics your appearance",
+        icon: "🎭"
+      },
+      {
+        name: "The Box of Horror",
+        type: "Mod",
+        description: "Cosmic horror dimension with eldritch entities",
+        icon: "📦"
+      },
+      {
+        name: "Alex's Mobs",
+        type: "Mod",
+        description: "Adds 60+ unique animals and creatures",
+        icon: "🦁"
+      },
+      {
+        name: "Bamboo Everything",
+        type: "Mod",
+        description: "Bamboo building blocks and decorative items",
+        icon: "🎋"
+      },
+      {
+        name: "Better Nether",
+        type: "Mod",
+        description: "Improved Nether with new biomes and blocks",
+        icon: "🔥"
+      },
+      {
+        name: "Biomes O Plenty",
+        type: "Mod",
+        description: "Over 80 new diverse biomes to explore",
+        icon: "🌍"
+      },
+      {
+        name: "Botania",
+        type: "Mod",
+        description: "Magic and nature-based mod with flowers and automation",
+        icon: "🌸"
+      },
+      {
+        name: "Buildcraft",
+        type: "Mod",
+        description: "Advanced logistics and industrial pipes",
+        icon: "🏭"
+      },
+      {
+        name: "Charm",
+        type: "Mod",
+        description: "Quality-of-life improvements and decorative blocks",
+        icon: "✨"
+      },
+      {
+        name: "Chisel",
+        type: "Mod",
+        description: "Multiple decorative variants for blocks",
+        icon: "🪓"
+      },
+      {
+        name: "Create",
+        type: "Mod",
+        description: "Mechanical engineering with gears and contraptions",
+        icon: "⚙️"
+      },
+      {
+        name: "Draconic Evolution",
+        type: "Mod",
+        description: "High-tier tech and dragon-related content",
+        icon: "🐉"
+      },
+      {
+        name: "EnderIO",
+        type: "Mod",
+        description: "Multi-blocks and advanced energy systems",
+        icon: "💜"
+      },
+      {
+        name: "Galacticraft",
+        type: "Mod",
+        description: "Space exploration with moon, Mars, and Venus dimensions",
+        icon: "🌙"
+      },
+      {
+        name: "Gregtech",
+        type: "Mod",
+        description: "Complex crafting chains and industrial gameplay",
+        icon: "🔧"
+      },
+      {
+        name: "Industrial Craft",
+        type: "Mod",
+        description: "Industrial machines and renewable energy",
+        icon: "⚡"
+      },
+      {
+        name: "Iron Chests",
+        type: "Mod",
+        description: "Upgradeable chest with more storage capacity",
+        icon: "📦"
+      },
+      {
+        name: "Just Enough Resources",
+        type: "Mod",
+        description: "Display ore distribution in world",
+        icon: "⛏️"
+      },
+      {
+        name: "Kobolds",
+        type: "Mod",
+        description: "Small dragon-like creatures and NPCs",
+        icon: "🐉"
+      },
+      {
+        name: "Looty",
+        type: "Mod",
+        description: "Enhanced loot tables and better drops",
+        icon: "💎"
+      },
+      {
+        name: "Modular Routers",
+        type: "Mod",
+        description: "Advanced item routing and filtering system",
+        icon: "📡"
+      },
+      {
+        name: "Nature's Aura",
+        type: "Mod",
+        description: "Magic system based on nature and aura energy",
+        icon: "🌿"
+      },
+      {
+        name: "OpenBlocks",
+        type: "Mod",
+        description: "Utility blocks and items for convenience",
+        icon: "🧱"
+      },
+      {
+        name: "Pam's Harvestcraft",
+        type: "Mod",
+        description: "60+ new crops and advanced farming",
+        icon: "🌾"
+      },
+      {
+        name: "Quark",
+        type: "Mod",
+        description: "Quality-of-life tweaks and new vanilla-like features",
+        icon: "✨"
+      },
+      {
+        name: "Railcraft",
+        type: "Mod",
+        description: "Advanced rail systems and locomotives",
+        icon: "🚂"
+      },
+      {
+        name: "RFTools",
+        type: "Mod",
+        description: "Dimensional building and teleportation",
+        icon: "📶"
+      },
+      {
+        name: "Simply Jetpacks",
+        type: "Mod",
+        description: "Customizable flight-enabled jetpacks",
+        icon: "🚀"
+      },
+      {
+        name: "Sophisticated Storage",
+        type: "Mod",
+        description: "Advanced storage with upgradeable chests",
+        icon: "📦"
+      },
+      {
+        name: "Thaumcraft",
+        type: "Mod",
+        description: "Magic system with research and thaumaturgy",
+        icon: "🔮"
+      },
+      {
+        name: "Tinkers' Construct",
+        type: "Mod",
+        description: "Create and modify custom tools with modifiers",
+        icon: "🔨"
+      },
+      {
+        name: "Traverse",
+        type: "Mod",
+        description: "New biome variants and mountainous terrain",
+        icon: "⛰️"
+      },
+      {
+        name: "Twilight Forest Extended",
+        type: "Mod",
+        description: "Expanded Twilight Forest with more bosses",
+        icon: "🌲"
+      },
+      {
+        name: "Waystones",
+        type: "Plugin",
+        description: "Place waystone portals for fast travel",
+        icon: "🗿"
+      },
+      {
+        name: "LiteBans",
+        type: "Plugin",
+        description: "Advanced player ban and mute management",
+        icon: "⛔"
+      },
+      {
+        name: "Dynamic Lights",
+        type: "Plugin",
+        description: "Adds dynamic lighting effects to the game",
+        icon: "🕯️"
+      }
+    ];
+
+    function renderMods(modsToShow) {
+      const container = document.getElementById("modsContainer");
+      const noResults = document.getElementById("noResults");
+      const resultCount = document.getElementById("resultCount");
+
+      container.innerHTML = "";
+
+      if (modsToShow.length === 0) {
+        container.style.display = "none";
+        noResults.style.display = "block";
+        resultCount.textContent = "Showing 0 results";
+      } else {
+        container.style.display = "grid";
+        noResults.style.display = "none";
+        resultCount.textContent = `Showing ${modsToShow.length} result${modsToShow.length !== 1 ? 's' : ''}`;
+
+        modsToShow.forEach(mod => {
+          const card = document.createElement("div");
+          card.className = "mod-card";
+          card.innerHTML = `
+            <div class="mod-icon">${mod.icon}</div>
+            <div class="mod-name">${mod.name}</div>
+            <span class="mod-type">${mod.type}</span>
+            <p class="mod-description">${mod.description}</p>
+            <div class="mod-actions">
+              <button class="mod-btn" onclick="showInfo('${encodeURIComponent(mod.name)}')">Info</button>
+              <button class="mod-btn install" onclick="installMod('${encodeURIComponent(mod.name)}')">Install</button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+    }
+
+    function filterMods() {
+      const searchInput = document.getElementById("searchInput").value.toLowerCase();
+      const typeFilter = document.getElementById("typeFilter").value;
+      
+      const filtered = modsData.filter(mod => {
+        const matchesSearch = mod.name.toLowerCase().includes(searchInput) ||
+          mod.type.toLowerCase().includes(searchInput) ||
+          mod.description.toLowerCase().includes(searchInput);
+
+        const modTypes = ["mod", "mod loader", "optimization"];
+        const pluginTypes = ["plugin"];
+        const matchesType = typeFilter === 'all' ||
+          (typeFilter === 'Mod' && modTypes.includes(mod.type.toLowerCase())) ||
+          (typeFilter === 'Plugin' && pluginTypes.includes(mod.type.toLowerCase()));
+        
+        return matchesSearch && matchesType;
+      });
+      renderMods(filtered);
+    }
+
+    function showInfo(modNameEncoded) {
+      const modName = decodeURIComponent(modNameEncoded);
+      const mod = modsData.find(item => item.name === modName);
+      if (!mod) return;
+      alert(`${mod.name}\n\nType: ${mod.type}\n\n${mod.description}`);
+    }
+
+    function installMod(modNameEncoded) {
+      const modName = decodeURIComponent(modNameEncoded);
+      const mod = modsData.find(item => item.name === modName);
+      if (!mod) return;
+      const content = `Downloading ${mod.name}.\n\nThis is a demo installer action for ${mod.name}.`;
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${mod.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.txt`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    function setTypeFilter(type) {
+      document.getElementById("typeFilter").value = type;
+      
+      // Update active button
+      document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+      if (type === "all") {
+        document.getElementById("filter-all").classList.add("active");
+      } else if (type === "Mod") {
+        document.getElementById("filter-mod").classList.add("active");
+      } else if (type === "Plugin") {
+        document.getElementById("filter-plugin").classList.add("active");
+      }
+      
+      filterMods();
+    }
+
+    // Initial render
+    renderMods(modsData);
+  </script>
+</body>
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Server Options</title>
+  <link rel="shortcut icon" href="2(1).png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    body {
+      background: #e9ecef;
+      color: #1f2937;
+      min-height: 100vh;
+    }
+
+    .page {
+      width: min(1200px, calc(100% - 32px));
+      margin: 24px auto 40px;
+    }
+
+    .page h1 {
+      font-size: 2.4rem;
+      color: #0f172a;
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+
+    .top-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .board {
+      background: #111827;
+      border-radius: 18px;
+      border: 1px solid rgba(15, 23, 42, 0.16);
+      padding: 22px;
+      width: 100%;
+      color: #e2e8f0;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+    }
+
+    .board.header-card {
+      display: grid;
+      grid-template-columns: auto auto;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .board.title-card {
+      display: grid;
+      gap: 10px;
+    }
+
+    .board p,
+    .board div,
+    .board label {
+      color: #cbd5e1;
+    }
+
+    .server-title {
+      color: #f8fafc;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.01em;
+    }
+
+    .server-subtitle {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .board-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.16);
+      color: #bfdbfe;
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #334155;
+      color: #e2e8f0;
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: #f8fafc;
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.16);
+    }
+
+    .alert-banner {
+      background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+      padding: 18px 22px;
+      border-radius: 16px;
+      color: #f8fafc;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .alert-banner span {
+      color: #e0f2fe;
+      font-size: 0.96rem;
+      line-height: 1.6;
+    }
+
+    .alert-banner .btn-link {
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 999px;
+      padding: 10px 16px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .props-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .prop-card {
+      background: #0f172a;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 18px 20px;
+      min-height: 130px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .prop-label {
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    .prop-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .prop-main strong {
+      color: #f8fafc;
+      font-size: 1.07rem;
+    }
+
+    .prop-extra {
+      color: #94a3b8;
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    .toggle {
+      width: 48px;
+      height: 28px;
+      border-radius: 999px;
+      background: #334155;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .toggle.active {
+      background: #22c55e;
+    }
+
+    .toggle-dot {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #fff;
+      transition: transform 0.2s ease;
+    }
+
+    .toggle.active .toggle-dot {
+      transform: translateX(20px);
+    }
+
+    .prop-select {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .timezone-card {
+      grid-column: 1 / -1;
+    }
+
+    .footer-note {
+      margin-top: 20px;
+      color: #94a3b8;
+      font-size: 0.94rem;
+      line-height: 1.7;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 18px 20px;
+    }
+
+    @media (max-width: 900px) {
+      .props-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .board.header-card {
+        grid-template-columns: 1fr;
+      }
+
+      .alert-banner {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="top-panel">
+      <div class="board title-card">
+        <div class="board-header">
+          <div>
+            <p class="server-title">World name.aternos.me</p>
+            <p class="server-subtitle">Welcome to the server of <strong>Enter your server name!</strong></p>
+          </div>
+          <span class="badge">Options</span>
+        </div>
+      </div>
+      <div class="board header-card">
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="location.href='3.html'">Back</button>
+          <button class="btn btn-primary">Domains</button>
+        </div>
+        <button class="btn btn-secondary">Reinstall</button>
+      </div>
+    </div>
+
+    <div class="alert-banner">
+      <span>Boost your Aternos server's performance with free additional RAM for a better gameplay.</span>
+      <a class="btn-link" href="#">Get your free RAM boost</a>
+    </div>
+
+    <div class="props-grid">
+      <div class="prop-card">
+        <div class="prop-label">Slots</div>
+        <div class="prop-main">
+          <strong>5</strong>
+          <div class="btn-row">
+            <button class="btn btn-secondary">+</button>
+            <button class="btn btn-secondary">−</button>
+          </div>
+        </div>
+        <div class="prop-extra">max-players=5</div>
+      </div>
+
+      <div class="prop-card">
+        <div class="prop-label">Gamemode</div>
+        <select class="prop-select">
+          <option selected>Survival</option>
+          <option>Creative</option>
+          <option>Adventure</option>
+          <option>Spectator</option>
+        </select>
+        <div class="prop-extra">gamemode=survival</div>
+      </div>
+
+      <div class="prop-card">
+        <div class="prop-label">Difficulty</div>
+        <select class="prop-select">
+          <option selected>Normal</option>
+          <option>Peaceful</option>
+          <option>Easy</option>
+          <option>Hard</option>
+        </select>
+        <div class="prop-extra">difficulty=normal</div>
+      </div>
+
+      <div class="prop-card">
+        <div class="prop-label">Cracked</div>
+        <div class="prop-main">
+          <strong id="crackedState">True</strong>
+          <div class="toggle active" id="crackedToggle" onclick="toggleState('cracked')">
+            <span class="toggle-dot"></span>
+          </div>
+        </div>
+        <div class="prop-extra">online-mode=true</div>
+      </div>
+
+      <div class="prop-card">
+        <div class="prop-label">Allow Cheats</div>
+        <div class="prop-main">
+          <strong id="cheatsState">Enabled</strong>
+          <div class="toggle active" id="cheatsToggle" onclick="toggleState('cheats')">
+            <span class="toggle-dot"></span>
+          </div>
+        </div>
+        <div class="prop-extra">allow-cheats=true</div>
+      </div>
+
+      <div class="prop-card">
+        <div class="prop-label">Force Gamemode</div>
+        <div class="prop-main">
+          <strong id="forceState">Disabled</strong>
+          <div class="toggle" id="forceToggle" onclick="toggleState('force')">
+            <span class="toggle-dot"></span>
+          </div>
+        </div>
+        <div class="prop-extra">force-gamemode=false</div>
+      </div>
+
+      <div class="prop-card">
+        <div class="prop-label">Resource pack required</div>
+        <div class="prop-main">
+          <strong id="resourceState">Disabled</strong>
+          <div class="toggle" id="resourceToggle" onclick="toggleState('resource')">
+            <span class="toggle-dot"></span>
+          </div>
+        </div>
+        <div class="prop-extra">texturepack-required=false</div>
+      </div>
+
+      <div class="prop-card">
+        <div class="prop-label">Allowlist</div>
+        <div class="prop-main">
+          <strong id="allowState">Disabled</strong>
+          <div class="toggle" id="allowToggle" onclick="toggleState('allow')">
+            <span class="toggle-dot"></span>
+          </div>
+        </div>
+        <div class="prop-extra">allow-list=false</div>
+      </div>
+
+      <div class="prop-card timezone-card">
+        <div class="prop-label">Timezone</div>
+        <select class="prop-select">
+          <option selected>Asia/Dhaka</option>
+          <option>Europe/London</option>
+          <option>America/New_York</option>
+          <option>Asia/Kolkata</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      This page is a custom options panel inspired by the screenshot style. Use the buttons and toggles to preview server settings.
+    </div>
+  </div>
+
+  <script>
+    function toggleState(type) {
+      const states = {
+        cracked: { el: 'crackedToggle', label: 'crackedState', on: 'True', off: 'False' },
+        cheats: { el: 'cheatsToggle', label: 'cheatsState', on: 'Enabled', off: 'Disabled' },
+        force: { el: 'forceToggle', label: 'forceState', on: 'Enabled', off: 'Disabled' },
+        resource: { el: 'resourceToggle', label: 'resourceState', on: 'Enabled', off: 'Disabled' },
+        allow: { el: 'allowToggle', label: 'allowState', on: 'Enabled', off: 'Disabled' }
+      };
+
+      const target = states[type];
+      const toggle = document.getElementById(target.el);
+      const label = document.getElementById(target.label);
+      const active = toggle.classList.toggle('active');
+
+      if (active) {
+        label.textContent = target.on;
+      } else {
+        label.textContent = target.off;
+      }
+    }
+  </script>
+</body>
+</html>

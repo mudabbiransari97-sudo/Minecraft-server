@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Files</title>
+  <link rel="shortcut icon" href="2(1).png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      background: #0f172a;
+      color: #e5eef8;
+      padding: 20px;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+      color: #3b82f6;
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    .page-title .title-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: #1e293b;
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #dbeafe;
+      font-size: 22px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .top-left,
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: #16202a;
+      color: #e5eef8;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      font-size: 14px;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      background: #1f2937;
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+
+    .button.primary {
+      background: #111827;
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+
+    .button.icon-only {
+      width: 46px;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .file-list {
+      background: #111827;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+    }
+
+    .file-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.2s ease;
+    }
+
+    .file-row:last-child {
+      border-bottom: none;
+    }
+
+    .file-row:hover {
+      background: rgba(59, 130, 246, 0.08);
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .file-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      color: #93c5fd;
+      font-size: 20px;
+    }
+
+    .file-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .file-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #f8fafc;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .file-meta {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+
+    .file-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: #0f172a;
+      color: #e5eef8;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: #1f2937;
+      transform: translateY(-1px);
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+
+    .file-row.header {
+      background: #111827;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-size: 14px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .file-row.header .file-item {
+      gap: 10px;
+    }
+
+    .file-badge {
+      margin-left: auto;
+      background: #0f172a;
+      border-radius: 999px;
+      padding: 4px 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #c7d2fe;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .top-right .button.icon-only {
+      background: #111827;
+    }
+
+    @media (max-width: 720px) {
+      .file-row {
+        grid-template-columns: 1fr;
+        row-gap: 12px;
+      }
+
+      .file-actions {
+        justify-content: flex-start;
+      }
+
+      .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="page-title">
+      <div class="title-icon">📁</div>
+      <span>Files</span>
+      <span class="file-badge">6</span>
+    </div>
+
+    <div class="top-bar">
+      <div class="top-left">
+        <a href="3.html" class="button primary">
+          <span>🏠</span>
+          Home
+        </a>
+        <button class="button">Select</button>
+      </div>
+      <div class="top-right">
+        <button class="button icon-only">➕</button>
+      </div>
+    </div>
+
+    <div class="file-list">
+      <div class="file-row header">
+        <div class="file-item">Name</div>
+        <div>Size</div>
+        <div>Actions</div>
+      </div>
+      <div class="file-row">
+        <div class="file-item">
+          <div class="file-icon">📄</div>
+          <div class="file-text">
+            <span class="file-name">allowlist.json</span>
+          </div>
+        </div>
+        <div class="file-meta">0.00 B</div>
+        <div class="file-actions">
+          <button class="action-btn" title="Download">⬇️</button>
+          <button class="action-btn" title="Delete">🗑️</button>
+        </div>
+      </div>
+      <div class="file-row">
+        <div class="file-item">
+          <div class="file-icon">📁</div>
+          <div class="file-text">
+            <span class="file-name">config</span>
+          </div>
+        </div>
+        <div class="file-meta">Folder</div>
+        <div class="file-actions">
+          <button class="action-btn" title="Open">📂</button>
+          <button class="action-btn" title="Delete">🗑️</button>
+        </div>
+      </div>
+      <div class="file-row">
+        <div class="file-item">
+          <div class="file-icon">📁</div>
+          <div class="file-text">
+            <span class="file-name">packs</span>
+          </div>
+        </div>
+        <div class="file-meta">Folder</div>
+        <div class="file-actions">
+          <button class="action-btn" title="Open">📂</button>
+          <button class="action-btn" title="Delete">🗑️</button>
+        </div>
+      </div>
+      <div class="file-row">
+        <div class="file-item">
+          <div class="file-icon">📄</div>
+          <div class="file-text">
+            <span class="file-name">permissions.json</span>
+          </div>
+        </div>
+        <div class="file-meta">116.00 B</div>
+        <div class="file-actions">
+          <button class="action-btn" title="Download">⬇️</button>
+          <button class="action-btn" title="Delete">🗑️</button>
+        </div>
+      </div>
+      <div class="file-row">
+        <div class="file-item">
+          <div class="file-icon">📄</div>
+          <div class="file-text">
+            <span class="file-name">server.properties</span>
+          </div>
+        </div>
+        <div class="file-meta">712.00 B</div>
+        <div class="file-actions">
+          <button class="action-btn" title="Download">⬇️</button>
+          <button class="action-btn" title="Delete">🗑️</button>
+        </div>
+      </div>
+      <div class="file-row">
+        <div class="file-item">
+          <div class="file-icon">📁</div>
+          <div class="file-text">
+            <span class="file-name">worlds</span>
+          </div>
+        </div>
+        <div class="file-meta">Folder</div>
+        <div class="file-actions">
+          <button class="action-btn" title="Open">📂</button>
+          <button class="action-btn" title="Delete">🗑️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
